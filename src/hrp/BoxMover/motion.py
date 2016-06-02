@@ -1,0 +1,146 @@
+
+import math
+import tf
+from numpy import matrix
+from location import *
+from point import Point
+
+SPEED_ROBOT=0.33075
+SPEED_ROTATION=math.pi/2.0
+class Motion:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def go_to_point(robot_pos, desired_point):
+	#print "Robot location ({},{})".format(robot_pos.x, robot_pos.y)
+        length = math.sqrt((desired_point.x-robot_pos.x)**2+(desired_point.y-robot_pos.y)**2)
+        run_time1 = length/SPEED_ROBOT
+
+        angle = Motion.angle_between_points(robot_pos,desired_point)
+        angle = Motion.fix_angle_360(angle)
+        angle = Motion.delta_between_angles(robot_pos.theta,angle)
+        omega = Motion.fix_angle_180(angle)
+        run_time2 = math.fabs(angle/SPEED_ROTATION)
+        if math.fabs(omega) < 0.01:
+            omega = 0
+            angle = 0
+
+        vel_x = math.cos(angle)*SPEED_ROBOT
+        vel_y = math.sin(angle)*SPEED_ROBOT
+        angular_speed = omega *SPEED_ROTATION
+        if length < 0.02:
+            speed = 0
+        else:
+            speed = vel_x # math.sqrt(vel_x**2 + vel_y**2)#vel_x#
+        return speed,angular_speed,run_time1,run_time2
+
+    @staticmethod
+    def dis_between_points(point1,point2):
+        return math.sqrt((point2.y-point1.y)**2+(point2.x-point1.x)**2)
+
+    @staticmethod
+    def angle_between_points(point1,point2):
+        return math.atan2(point2.y-point1.y,point2.x-point1.x)
+
+    @staticmethod
+    def delta_between_angles(first,second):
+        delta_angle = second - first
+        #return math.atan2(math.sin(delta_angle), math.cos(delta_angle))
+        return delta_angle
+
+    @staticmethod
+    def go_to_angle(robot_pos, look_at_point):
+        current_angle = robot_pos.theta
+        desired_angle = Motion.angle_between_points(robot_pos, look_at_point)
+        desired_angle = Motion.fix_angle_360(desired_angle)
+        delta = Motion.delta_between_angles(current_angle, desired_angle)
+        delta = Motion.fix_angle_180(delta)
+        run_time = math.fabs(delta/SPEED_ROTATION)
+        if math.fabs(delta) < 0.1:
+            delta = 0
+        speed = delta*SPEED_ROTATION
+        return speed,run_time
+
+    @staticmethod
+    def get_point_behind_box(box, distance=0.5, goal = None):
+        angle = Motion.angle_between_points(goal, box)
+        x = box.x + (distance * math.cos(angle))
+        y = box.y + (distance * math.sin(angle))
+        return Point(x,y)
+
+
+    @staticmethod
+    def rotate_point_by_angle(point, angle):
+        rotation__matrix = matrix([[math.cos(angle),math.sin(angle)],
+                    [-math.sin(angle),math.cos(angle)]])
+        point_matrix = matrix([[point.x],[point.y]])
+        rotated = rotation__matrix * point_matrix
+        array = rotated.getA()
+        return Point(round(array[0][0],3),round(array[1][0],3))
+
+    @staticmethod
+    def is_point_in_front_of_robot(robot, point, param_x = 2.5, param_y = 0.2):
+        ref_point = Point(point.x-robot.x,point.y - robot.y)
+        rotated_point = Motion.rotate_point_by_angle(ref_point, robot.theta)
+
+        if 0.5 < rotated_point.x < param_x and  param_y > rotated_point.y > -param_y:
+            return True
+        return False
+
+    @staticmethod
+    def is_box_behind_robot(robot_loc, box, goal):
+        dist_robot_x = (goal.x - robot_loc.x)
+        dist_robot_y = (goal.y - robot_loc.y)
+        dist_robot_to_goal = math.sqrt(dist_robot_x**2+dist_robot_y**2)
+
+        dist_box_x = (goal.x - box.x)
+        dist_box_y = (goal.y - box.y)
+        dist_box_to_goal = math.sqrt(dist_box_x**2+dist_box_y**2)
+
+        if dist_robot_to_goal < dist_box_to_goal:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def is_box_in_front_of_robot(robot, box, goal,param_x = 1.8, param_y = 1.8, behind_x = 0):
+        if Motion.is_box_behind_robot(robot,box,goal):
+            #print "Robot in front of box!"
+            return False
+        ref_point = Point(box.x-robot.x,box.y - robot.y)
+        if ref_point.x < 0:
+            if math.fabs(ref_point.x) < behind_x:
+                ref_point.x = -ref_point.x
+            else:
+                #print "Robot is too far behind"
+                return False
+        rotated_point = Motion.rotate_point_by_angle(ref_point, robot.theta)
+        angle_to_goal = Motion.angle_between_points(robot, goal)
+        angle_to_goal = Motion.fix_angle_180(angle_to_goal)
+        angle_diff = math.fabs(angle_to_goal-robot.theta)
+        if angle_diff > math.pi:
+            angle_diff = (2*math.pi - angle_diff)
+        if -param_x < rotated_point.x < param_x and  param_y > rotated_point.y > -param_y:
+            if angle_diff < 0.1:
+                return True
+            #print "Not angled to goal!"
+            return False
+        #print "Not Behind Box!"
+        return False
+
+    @staticmethod
+    def fix_angle_360(angle):
+        if angle > math.pi * 2.0:
+            angle -= math.pi * 2.0
+        elif angle < 0.:
+            angle += math.pi * 2.0
+        return angle
+
+    @staticmethod
+    def fix_angle_180(angle):
+        if angle > math.pi:
+            angle -= math.pi * 2.0
+        elif angle < -math.pi:
+            angle += math.pi * 2.0
+        return angle

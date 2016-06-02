@@ -1,0 +1,155 @@
+
+import numpy as np
+import math
+import tf
+from point import Point
+from location import *
+from motion import Motion
+
+GO_TO_TARGET_CONTROLLED_ZONE=0.
+GO_TO_TARGET_DEAD_ZONE=0.
+SWIRL_CONTROLLED_ZONE=1.2
+SWIRL_DEAD_ZONE=0.75
+PUSH_ZONE_LAMBDA=0.223
+PUSH_DEAD_ZONE=0.8
+ACQUIRE_CONTROLLED_ZONE=1.8
+ACQUIRE_DEAD_ZONE=0.8
+THETA_MAX=math.radians(45)
+
+class Robot:
+    def __init__(self,name='noName',goal=[0.,0.],way_points=[]):
+        self.name = name
+        self.robotLocation = RobotLocation()
+        self.locations = None
+        self.goal=Point(x=goal[0],y=goal[1])
+        self.target=Point(way_points[0][0],way_points[0][1])
+        self.wayPoints=way_points
+        self.targetIndex=1
+        self.boxLocation = BoxLocation()
+        self.lastBoxLocation = BoxLocation()
+        self.distanceToBox = 0
+        self.bump = 'none'
+        self.range = -1
+        self.v = 0.
+        self.omega = 0.
+
+    def tick(self):
+        self.move()
+
+    def update_pos(self, pos, ori):
+        self.robotLocation.x=pos[0]
+        self.robotLocation.y=pos[1]
+        euler = tf.transformations.euler_from_quaternion(ori)
+        self.robotLocation.theta=euler[2]
+
+    def update_bump(self, bump):
+        self.bump = bump
+
+    def update_box_pos(self, pos):
+        self.boxLocation.x = pos[0]
+        self.boxLocation.y = pos[1]
+        print "Box location ({},{})".format(self.boxLocation.x, self.boxLocation.y)
+
+    def update_box_pos_1(self, pos):
+        self.boxLocation.x = pos.x
+        self.boxLocation.y = pos.y
+        print "Box location ({},{})".format(self.boxLocation.x, self.boxLocation.y)
+
+    def update_range(self, r):
+        self.range = r
+
+    def get_goal(self):
+        #print "Goal location ({},{})".format(self.goal.x, self.goal.y)
+        return np.array([self.goal.x, self.goal.y])
+
+    def get_robot_location(self):
+        return np.array([self.robotLocation.x, self.robotLocation.y])
+
+    # currently returns the box_pos from simulation, if range sensor implemented rotate to find target
+    def search(self):
+        return np.array([self.boxLocation.x, self.boxLocation.y])
+
+    def go_to_target(self):
+        #vector from center of robot to target object
+        v = self.search() - self.get_robot_location()
+        r = np.linalg.norm(np.array(v))
+        if r > GO_TO_TARGET_CONTROLLED_ZONE:
+            v = v
+        elif GO_TO_TARGET_DEAD_ZONE < r < GO_TO_TARGET_CONTROLLED_ZONE:
+            v = v * ((r-GO_TO_TARGET_DEAD_ZONE)/(GO_TO_TARGET_CONTROLLED_ZONE-GO_TO_TARGET_DEAD_ZONE))
+        else:
+            v = v *0.
+        return v
+
+    def angle_to_point_behind_box(self):
+        angle_g_to_t= Motion.angle_between_points(self.boxLocation, self.target)
+        angle_r_to_t= Motion.angle_between_points(self.boxLocation, self.robotLocation)
+        theta = Motion.delta_between_angles(angle_g_to_t,angle_r_to_t)
+        theta = Motion.fix_angle_180(theta)
+        return theta
+
+    def dock(self):
+        Vr_to_t = self.search()- self.get_robot_location()
+        theta = self.angle_to_point_behind_box()
+        if theta < 0:
+            Vperp = np.array([-Vr_to_t[1],Vr_to_t[0]]) # turn left?
+            theta = math.pi + theta
+        else:
+            Vperp = np.array([Vr_to_t[1],-Vr_to_t[0]]) # turn right?
+            theta = math.pi - theta
+        alpha = theta/THETA_MAX
+        if theta > THETA_MAX and Motion.is_point_in_front_of_robot(self.robotLocation,self.boxLocation):
+            v= Vperp
+        else:
+            v= alpha*Vperp + (1-alpha)*Vr_to_t
+        return v
+
+    def push(self):
+        Vr_to_t = self.search()-self.get_robot_location()
+        Vt_to_g = self.get_goal()-self.search()
+        r = np.linalg.norm(np.array(Vr_to_t))
+        if r > PUSH_DEAD_ZONE:
+            v_push = Vr_to_t - PUSH_ZONE_LAMBDA*Vt_to_g
+        else:
+            v_push = Vr_to_t + PUSH_ZONE_LAMBDA*Vt_to_g
+        return self.target#Point(v_push[0],v_push[1]).add(self.robotLocation)#
+
+    def acquire(self):
+        #point_behind_box=Motion.get_point_behind_box(self.boxLocation,distance=0.5,goal=self.target).get_array()
+        v = self.search() -self.get_robot_location()
+        r = np.linalg.norm(np.array(v))
+        beta=1
+        if r > ACQUIRE_CONTROLLED_ZONE:
+            beta=1
+        elif ACQUIRE_DEAD_ZONE < r < ACQUIRE_CONTROLLED_ZONE:
+            beta=(r-ACQUIRE_DEAD_ZONE)/(ACQUIRE_CONTROLLED_ZONE-ACQUIRE_DEAD_ZONE)
+        elif r < ACQUIRE_DEAD_ZONE:
+            beta=0
+        v_alignment= beta*self.go_to_target() + (1-beta)*self.dock()
+        return Point(x=v_alignment[0],y=v_alignment[1]).add(self.robotLocation)
+
+    def move(self):
+
+        if Motion.dis_between_points(self.boxLocation,self.goal) < 0.5:
+            print 'Goooooooal reached!!!!!!!!!!!!!'
+            self.v = 0.
+            self.omega = 0.
+            return
+        if Motion.dis_between_points(self.boxLocation,self.target) < .5:
+            self.target = Point(self.wayPoints[self.targetIndex][0],self.wayPoints[self.targetIndex][1])
+            self.targetIndex += 1
+        if Motion.is_box_in_front_of_robot(self.robotLocation,self.boxLocation,self.target, behind_x=4.5):
+            #print 'Pushing!'
+            self.v,self.omega,run_time1,run_time2 = Motion.go_to_point(self.robotLocation, self.push())
+            return
+        self.v,self.omega,run_time1,run_time2 = Motion.go_to_point(self.robotLocation,self.acquire())
+
+    @staticmethod
+    def normalize(v):
+        n = np.linalg.norm(np.array(v))
+        if n == 0:
+            return v
+        else:
+            return np.array(v)/n
+
+

@@ -1,0 +1,8 @@
+prefix=/home/agneev/catkin_ws/devel
+
+Name: am_mpu9150
+Description: Description of am_mpu9150
+Version: 0.0.0
+Cflags: -I/home/agneev/catkin_ws/src/hrp/am_mpu9150/include
+Libs: -L/home/agneev/catkin_ws/devel/lib 
+Requires: roscpp sensor_msgs std_msgs geometry_msgs

@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_planning")
+set(am_planning_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_planning_DEPRECATED "")
+set(am_planning_VERSION "0.0.0")
+set(am_planning_BUILD_DEPENDS "geometry_msgs" "nav_msgs" "roscpp" "std_msgs" "sensor_msgs" "am_driver" "tf" "message_generation")
+set(am_planning_RUN_DEPENDS "message_runtime" "geometry_msgs" "nav_msgs" "roscpp" "std_msgs" "sensor_msgs" "am_driver" "tf")
+set(am_planning_BUILDTOOL_DEPENDS "catkin")

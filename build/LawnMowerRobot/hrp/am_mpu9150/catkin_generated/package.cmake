@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_mpu9150")
+set(am_mpu9150_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_mpu9150_DEPRECATED "")
+set(am_mpu9150_VERSION "0.0.0")
+set(am_mpu9150_BUILD_DEPENDS "roscpp" "sensor_msgs" "std_msgs" "geometry_msgs")
+set(am_mpu9150_RUN_DEPENDS "roscpp" "sensor_msgs" "std_msgs" "geometry_msgs")
+set(am_mpu9150_BUILDTOOL_DEPENDS "catkin")

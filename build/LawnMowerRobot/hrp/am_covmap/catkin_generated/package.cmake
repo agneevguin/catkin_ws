@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_covmap")
+set(am_covmap_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_covmap_DEPRECATED "")
+set(am_covmap_VERSION "0.0.0")
+set(am_covmap_BUILD_DEPENDS "am_driver" "nav_msgs" "roscpp" "std_msgs" "tf")
+set(am_covmap_RUN_DEPENDS "am_driver" "nav_msgs" "roscpp" "std_msgs" "tf")
+set(am_covmap_BUILDTOOL_DEPENDS "catkin")

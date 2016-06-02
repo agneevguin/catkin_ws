@@ -1,0 +1,12 @@
+background_b: 255
+background_g: 86
+background_r: 150
+rosdistro: 'indigo
+
+  '
+roslaunch:
+  uris: {host_agneev_ubuntu__35966: 'http://Agneev-Ubuntu:35966/'}
+rosversion: '1.11.16
+
+  '
+run_id: 5c9f11e4-f98c-11e5-94b3-c417fe7df52b

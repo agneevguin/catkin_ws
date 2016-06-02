@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_gazebo_wire")
+set(am_gazebo_wire_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_gazebo_wire_DEPRECATED "")
+set(am_gazebo_wire_VERSION "0.0.0")
+set(am_gazebo_wire_BUILD_DEPENDS "am_driver" "gazebo_msgs" "gazebo_ros" "roscpp")
+set(am_gazebo_wire_RUN_DEPENDS "am_driver" "gazebo_msgs" "gazebo_ros" "roscpp")
+set(am_gazebo_wire_BUILDTOOL_DEPENDS "catkin")

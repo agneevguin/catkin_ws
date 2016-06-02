@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_steering")
+set(am_steering_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_steering_DEPRECATED "")
+set(am_steering_VERSION "0.0.0")
+set(am_steering_BUILD_DEPENDS "geometry_msgs" "nav_msgs" "roscpp" "std_msgs" "sensor_msgs" "am_driver" "tf")
+set(am_steering_RUN_DEPENDS "geometry_msgs" "nav_msgs" "roscpp" "std_msgs" "sensor_msgs" "am_driver" "tf")
+set(am_steering_BUILDTOOL_DEPENDS "catkin")

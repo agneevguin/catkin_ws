@@ -1,0 +1,8 @@
+prefix=/home/agneev/catkin_ws/devel
+
+Name: am_loopmap
+Description: Description of am_loopmap
+Version: 0.0.0
+Cflags: -I/home/agneev/catkin_ws/src/hrp/am_loopmap/include
+Libs: -L/home/agneev/catkin_ws/devel/lib 
+Requires: nav_msgs roscpp std_msgs tf am_driver

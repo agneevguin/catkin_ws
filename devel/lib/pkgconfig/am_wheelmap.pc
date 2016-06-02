@@ -1,0 +1,8 @@
+prefix=/home/agneev/catkin_ws/devel
+
+Name: am_wheelmap
+Description: Description of am_wheelmap
+Version: 0.0.0
+Cflags: -I/home/agneev/catkin_ws/src/hrp/am_wheelmap/include
+Libs: -L/home/agneev/catkin_ws/devel/lib 
+Requires: am_driver nav_msgs roscpp std_msgs tf

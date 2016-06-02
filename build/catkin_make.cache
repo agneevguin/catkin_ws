@@ -1,0 +1,2 @@
+beginner_tutorials:hrp/am_confinement:hrp/am_control:hrp/am_covmap:hrp/am_description:hrp/am_driver:hrp/am_gazebo:hrp/am_gazebo_controller_2wd:hrp/am_gazebo_sensors:hrp/am_gazebo_uwbrange:hrp/am_gazebo_wheelencoder:hrp/am_gazebo_wire:hrp/am_hrp_apps:hrp/am_hrp_position:hrp/am_loopmap:hrp/am_mpu9150:hrp/am_planning:hrp/am_steering:hrp/am_uwbrange:hrp/am_wheelmap
+-DCATKIN_DEVEL_PREFIX=/home/agneev/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/agneev/catkin_ws/install -G Unix Makefiles

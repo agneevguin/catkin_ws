@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_hrp_apps")
+set(am_hrp_apps_MAINTAINER "bjorn <bjorn.mannefred@husqvarnagroup.com>")
+set(am_hrp_apps_DEPRECATED "")
+set(am_hrp_apps_VERSION "0.0.0")
+set(am_hrp_apps_BUILD_DEPENDS "geometry_msgs" "nav_msgs" "roscpp" "std_msgs" "sensor_msgs" "am_driver" "tf")
+set(am_hrp_apps_RUN_DEPENDS "geometry_msgs" "nav_msgs" "roscpp" "std_msgs" "sensor_msgs" "am_driver" "tf")
+set(am_hrp_apps_BUILDTOOL_DEPENDS "catkin")

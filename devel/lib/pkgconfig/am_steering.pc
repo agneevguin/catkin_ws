@@ -1,0 +1,8 @@
+prefix=/home/agneev/catkin_ws/devel
+
+Name: am_steering
+Description: Description of am_steering
+Version: 0.0.0
+Cflags: -I/home/agneev/catkin_ws/src/hrp/am_steering/include
+Libs: -L/home/agneev/catkin_ws/devel/lib 
+Requires: geometry_msgs nav_msgs roscpp std_msgs sensor_msgs am_driver tf

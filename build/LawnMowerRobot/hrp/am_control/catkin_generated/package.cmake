@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_control")
+set(am_control_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_control_DEPRECATED "")
+set(am_control_VERSION "0.0.0")
+set(am_control_BUILD_DEPENDS "controller_manager" "geometry_msgs" "sensor_msgs" "std_msgs")
+set(am_control_RUN_DEPENDS "controller_manager" "geometry_msgs" "sensor_msgs" "std_msgs")
+set(am_control_BUILDTOOL_DEPENDS "catkin")

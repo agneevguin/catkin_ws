@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_wheelmap")
+set(am_wheelmap_MAINTAINER "bjorn <bjorn@todo.todo>")
+set(am_wheelmap_DEPRECATED "")
+set(am_wheelmap_VERSION "0.0.0")
+set(am_wheelmap_BUILD_DEPENDS "am_driver" "nav_msgs" "roscpp" "std_msgs" "tf")
+set(am_wheelmap_RUN_DEPENDS "am_driver" "nav_msgs" "roscpp" "std_msgs" "tf")
+set(am_wheelmap_BUILDTOOL_DEPENDS "catkin")

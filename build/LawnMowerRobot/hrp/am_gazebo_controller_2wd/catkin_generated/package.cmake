@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_gazebo_controller_2wd")
+set(am_gazebo_controller_2wd_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_gazebo_controller_2wd_DEPRECATED "")
+set(am_gazebo_controller_2wd_VERSION "0.0.0")
+set(am_gazebo_controller_2wd_BUILD_DEPENDS "gazebo" "gazebo_ros" "gazebo_msgs" "am_driver" "roscpp" "std_msgs" "dynamic_reconfigure")
+set(am_gazebo_controller_2wd_RUN_DEPENDS "gazebo" "gazebo_ros" "gazebo_msgs" "am_driver" "roscpp" "std_msgs" "dynamic_reconfigure")
+set(am_gazebo_controller_2wd_BUILDTOOL_DEPENDS "catkin")

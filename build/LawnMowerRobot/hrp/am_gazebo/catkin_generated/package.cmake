@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_gazebo")
+set(am_gazebo_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_gazebo_DEPRECATED "")
+set(am_gazebo_VERSION "0.0.0")
+set(am_gazebo_BUILD_DEPENDS "am_description" "gazebo_msgs" "gazebo_plugins" "gazebo_ros" "gazebo_ros_control")
+set(am_gazebo_RUN_DEPENDS "am_description" "gazebo_msgs" "gazebo_plugins" "gazebo_ros" "gazebo_ros_control")
+set(am_gazebo_BUILDTOOL_DEPENDS "catkin")

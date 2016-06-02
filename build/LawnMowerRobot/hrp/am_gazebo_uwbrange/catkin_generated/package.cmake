@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_gazebo_uwbrange")
+set(am_gazebo_uwbrange_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_gazebo_uwbrange_DEPRECATED "")
+set(am_gazebo_uwbrange_VERSION "0.0.0")
+set(am_gazebo_uwbrange_BUILD_DEPENDS "gazebo_ros" "gazebo_msgs" "roscpp" "am_driver")
+set(am_gazebo_uwbrange_RUN_DEPENDS "gazebo_ros" "gazebo_msgs" "roscpp" "am_driver")
+set(am_gazebo_uwbrange_BUILDTOOL_DEPENDS "catkin")

@@ -1,0 +1,7 @@
+set(_CATKIN_CURRENT_PACKAGE "am_description")
+set(am_description_MAINTAINER "stefan <stefan@todo.todo>")
+set(am_description_DEPRECATED "")
+set(am_description_VERSION "0.0.0")
+set(am_description_BUILD_DEPENDS "robot_state_publisher" "urdf" "xacro")
+set(am_description_RUN_DEPENDS "robot_state_publisher" "urdf" "xacro")
+set(am_description_BUILDTOOL_DEPENDS "catkin")

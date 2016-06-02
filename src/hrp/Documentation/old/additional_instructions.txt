@@ -1,0 +1,5 @@
+Also install:
+* ros-indigo-nmea-msgs
+* libcgal-dev
+
+Export should say: export GAZEBO_MODEL_PATH=/home/fredrik/ros/husqvarna/husqvarna-ws/src/hrp/am_gazebo/models:$GAZEBO_MODEL_PATH
